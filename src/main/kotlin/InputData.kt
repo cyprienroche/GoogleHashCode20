@@ -7,12 +7,18 @@ class InputData(private val scanner: Scanner) {
     val scores: List<Int> = List(totalBooks) { scanner.nextInt() }
     val libraries: Map<Library, List<Book>>
 
+    val orderedBookIndexByScore = scores.withIndex().sortedBy { it.value }
+
+    val bookIndexToScore = (0 until totalBooks).zip(scores).toMap()
+
     init {
         val libs = mutableMapOf<Library, List<Book>>()
         for (i in 0 until totalLibraries) {
             val numBooksInLibrary = scanner.nextInt()
-            val lib = Library(i, Day(scanner.nextInt()), Day(scanner.nextInt()))
-            val books = List(numBooksInLibrary) { Book(scanner.nextInt(), lib) }
+            val lib = Library(i, Day(scanner.nextInt()), Day(scanner.nextInt()), 0)
+            val xs = List(numBooksInLibrary) { scanner.nextInt() }
+            val books = xs.map { Book(it, lib, bookIndexToScore[it]?:0) }
+            lib.maxScore = books.map { it.score }.max()?:0
             libs[lib] = books
         }
         libraries = libs
@@ -24,7 +30,6 @@ class InputData(private val scanner: Scanner) {
 
     val libsSorted = libraries.keys.sortedWith(LibComparator())
 
-    val orderedBookIndexByScore = scores.withIndex().sortedBy { it.value }
 
     // val orderedBooksByScore = libraries.values.sortedWith()
 
@@ -38,15 +43,17 @@ class LibComparator() : Comparator<Library> {
     }
 }
 
-data class Library(val id: Int, val signUp: Day, val booksPerDay: Day): Comparable<Library> {
-    override fun compareTo(other: Library): Int =
-        if (signUp != other.signUp) signUp.compareTo(other.signUp)
-        else -1 * booksPerDay.compareTo(other.booksPerDay)
+data class Library(val id: Int, val signUp: Day, val booksPerDay: Day, var maxScore: Int): Comparable<Library> {
+    override fun compareTo(other: Library): Int = when {
+            maxScore != other.maxScore -> -1 * maxScore.compareTo(other.maxScore)
+            signUp != other.signUp -> signUp.compareTo(other.signUp)
+            else -> -1 * booksPerDay.compareTo(other.booksPerDay)
+        }
 }
 
 data class Day(val size: Int): Comparable<Day> {
     override fun compareTo(other: Day): Int = size.compareTo(other.size)
 }
 
-data class Book(val id: Int, val lib: Library)
+data class Book(val id: Int, val lib: Library, val score: Int)
 
