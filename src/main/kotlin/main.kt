@@ -14,8 +14,13 @@ fun main() {
         val scanner = Scanner(it)
         val data = InputData(Scanner(it))
 
-        // val outputFile = "$outputPath/${it.name.replace(".in", ".out")}"
-        // writeToOutput(File(outputFile), data.n, data.xs)
+        val outputData = OutputData(
+            listOf(1,0),
+            mapOf(0 to listOf(Book(0),Book(1),Book(2), Book(3),Book(4)),
+                1 to listOf(Book(5),Book(2),Book(3)))
+        )
+        val outputFile = "$outputPath/${it.name.replace(".in", ".out")}"
+        outputData.writeToOutput(File(outputFile))
     }
 }
 
