@@ -11,14 +11,16 @@ fun main() {
     val input = File(inputPath)
 
     input.listFiles()?.forEach {
-        val inputData = InputData(Scanner(it))
+        if (it.name.startsWith("f")) {
+            val inputData = InputData(Scanner(it))
 
-        val outputData = OutputData(
-            inputData.sortedLibsByTime,
-            inputData.libraries
-        )
-        val outputFile = "$outputPath/${it.name.replace(".in", ".out")}"
-        outputData.writeToOutput(File(outputFile))
+            val outputData = OutputData(
+                inputData.sortedLibsByTime,
+                inputData.libraries
+            )
+            val outputFile = "$outputPath/${it.name.replace(".txt", ".out")}"
+            outputData.writeToOutput(File(outputFile))
+        }
     }
 }
 

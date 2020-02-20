@@ -4,7 +4,7 @@ class InputData(private val scanner: Scanner) {
     val totalBooks: Int = scanner.nextInt()
     private val totalLibraries: Int = scanner.nextInt()
     val totalDaysGiven: Day = Day(scanner.nextInt())
-    val scores: List<Int> = List(6) { scanner.nextInt() }
+    val scores: List<Int> = List(totalBooks) { scanner.nextInt() }
     val libraries: Map<Library, List<Book>>
 
     init {
