@@ -8,11 +8,14 @@ fun main() {
     File(inputPath).mkdir()
     File(outputPath).mkdir()
 
-    File(inputPath).listFiles()?.forEach {
-        val data = getData(Scanner(it))
+    val input = File(inputPath)
 
-        val outputFile = "$outputPath/${it.name.replace(".in", ".out")}"
-        writeToOutput(File(outputFile), data.n, data.xs)
+    input.listFiles()?.forEach {
+        val scanner = Scanner(it)
+        val data = InputData(Scanner(it))
+
+        // val outputFile = "$outputPath/${it.name.replace(".in", ".out")}"
+        // writeToOutput(File(outputFile), data.n, data.xs)
     }
 }
 
@@ -21,10 +24,4 @@ fun writeToOutput(outputFile: File, size: Int, output: List<Int>) {
     output.forEach{outputFile.appendText("$it ")}
 }
 
-fun getData(scanner: Scanner): InputData {
-    val m = scanner.nextInt();
-    val n = scanner.nextInt();
-    return InputData(m, n, List(n) { scanner.nextInt() })
-}
 
-data class InputData(val m: Int, val n: Int, val xs: List<Int>)
