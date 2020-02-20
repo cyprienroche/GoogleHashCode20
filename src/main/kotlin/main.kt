@@ -14,7 +14,7 @@ fun main() {
         val inputData = InputData(Scanner(it))
 
         val outputData = OutputData(
-            inputData.libraries.keys.reversed(),
+            inputData.sortedLibsByTime,
             inputData.libraries
         )
         val outputFile = "$outputPath/${it.name.replace(".in", ".out")}"
