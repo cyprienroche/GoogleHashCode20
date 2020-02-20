@@ -11,22 +11,15 @@ fun main() {
     val input = File(inputPath)
 
     input.listFiles()?.forEach {
-        val scanner = Scanner(it)
-        val data = InputData(Scanner(it))
+        val inputData = InputData(Scanner(it))
 
         val outputData = OutputData(
-            listOf(1,0),
-            mapOf(0 to listOf(Book(0),Book(1),Book(2), Book(3),Book(4)),
-                1 to listOf(Book(5),Book(2),Book(3)))
+            inputData.libraries.keys.reversed(),
+            inputData.libraries
         )
         val outputFile = "$outputPath/${it.name.replace(".in", ".out")}"
         outputData.writeToOutput(File(outputFile))
     }
-}
-
-fun writeToOutput(outputFile: File, size: Int, output: List<Int>) {
-    outputFile.writeText("$size\n")
-    output.forEach{outputFile.appendText("$it ")}
 }
 
 
