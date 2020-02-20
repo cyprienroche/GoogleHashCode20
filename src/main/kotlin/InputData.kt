@@ -18,7 +18,11 @@ class InputData(private val scanner: Scanner) {
         libraries = libs
     }
 
-    val sortedLibsByTime = libraries.keys.sortedBy { it.signUp.size }
+    val libsByTime = libraries.keys.sortedBy { it.signUp.size }
+
+    val libsByNumBooksScan = libraries.keys.sortedBy { it.booksPerDay.size }
+
+    val libsSorted = libraries.keys.sortedWith(LibComparator())
 
     val orderedBookIndexByScore = scores.withIndex().sortedBy { it.value }
 
@@ -27,9 +31,22 @@ class InputData(private val scanner: Scanner) {
     // fun orderLibraryByScore() = orderedBooksByScore.map {  }
 }
 
-class Library(val id: Int, val signUp: Day, val ship: Day)
+class LibComparator() : Comparator<Library> {
+    override fun compare(o1: Library?, o2: Library?): Int {
+        return if (o2 == null) 1
+               else o1?.compareTo(o2)?:-1
+    }
+}
 
-data class Day(val size: Int)
+data class Library(val id: Int, val signUp: Day, val booksPerDay: Day): Comparable<Library> {
+    override fun compareTo(other: Library): Int =
+        if (signUp != other.signUp) signUp.compareTo(other.signUp)
+        else -1 * booksPerDay.compareTo(other.booksPerDay)
+}
+
+data class Day(val size: Int): Comparable<Day> {
+    override fun compareTo(other: Day): Int = size.compareTo(other.size)
+}
 
 data class Book(val id: Int, val lib: Library)
 
